@@ -3,16 +3,16 @@ const cors = require("cors");
 const app = express();
 require("dotenv").config();
 // middleware
-app.use(require("cors")({ origin: "http://localhost:5080", credentials: false }));
-app.use(express.json({ limit: "256kb" }));
+app.use(express.json());
+app.use(cors());
 // Routes Path
-const api = require("./api/api");
+const requisition = require("./routes/api");
 // Routes
-app.use("/", api);
+app.use("/", requisition);
 // Port location
 let port = process.env.PORT;
 if (port == null || port == "") {
-  port = 5080;
+  port = 5000;
 }
 
 app.get("/", (req, res) => {
