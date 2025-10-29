@@ -7,36 +7,107 @@ const TMP_PATH = path.join(__dirname, "data.tmp");
 
 // Helpers
 const now = () => new Date().toISOString();
-const ACTIVE_STATUSES = new Set(["waiting", "called", "serving"]);
+const ACTIVE_STATUSES = new Set(["waiting","called","serving"]);
+
+const DEFAULTS = {
+  sequences: { ticketSeq: 1 },
+  kiosks: [
+    { id:1, code:"K1", location:"Lobby A", is_active:true, created_at:now() },
+    { id:2, code:"K2", location:"Lobby B", is_active:true, created_at:now() },
+    { id:3, code:"K3", location:"Annex",   is_active:true, created_at:now() },
+  ],
+  users: [
+    { id:1, username:"alice", role:"employee", display_name:"Alice", is_active:true },
+    { id:2, username:"bob",   role:"employee", display_name:"Bob",   is_active:true },
+    { id:3, username:"carol", role:"employee", display_name:"Carol", is_active:true },
+    { id:4, username:"dan",   role:"employee", display_name:"Dan",   is_active:true },
+    { id:5, username:"admin", role:"admin",    display_name:"Admin", is_active:true },
+  ],
+  // lanes will be generated to always be > employee count
+  lanes: [],
+  // employee lane assignments
+  employeeLaneAssignments: [],
+  categories: [
+    // Licensing
+    { id:  1, parent_id: null, name:"Licensing", is_selectable:false, is_active:true, is_visible:true, sort_order:1, prefix_letter:"A" },
+    { id:  2, parent_id: 1,    name:"Driver License", is_selectable:false, is_active:true, is_visible:true, sort_order:1, prefix_letter:"A" },
+    { id:  3, parent_id: 2,    name:"New Application", is_selectable:true, is_active:true, is_visible:true, sort_order:1, prefix_letter:"A" },
+    { id:  4, parent_id: 2,    name:"Renewal",         is_selectable:true, is_active:true, is_visible:true, sort_order:2, prefix_letter:"A" },
+    { id:  5, parent_id: 1,    name:"Professional",    is_selectable:true, is_active:true, is_visible:true, sort_order:2, prefix_letter:"A" },
+    // Permits
+    { id: 10, parent_id: null, name:"Permits", is_selectable:false, is_active:true, is_visible:true, sort_order:2, prefix_letter:"B" },
+    { id: 11, parent_id: 10,   name:"Building",  is_selectable:true, is_active:true, is_visible:true, sort_order:1, prefix_letter:"B" },
+    { id: 12, parent_id: 10,   name:"Electrical",is_selectable:true, is_active:true, is_visible:true, sort_order:2, prefix_letter:"B" },
+    // Records
+    { id: 20, parent_id: null, name:"Records", is_selectable:false, is_active:true, is_visible:true, sort_order:3, prefix_letter:"C" },
+    { id: 21, parent_id: 20,   name:"Birth Certificate", is_selectable:true, is_active:true, is_visible:true, sort_order:1, prefix_letter:"C" },
+    { id: 22, parent_id: 20,   name:"Marriage License",  is_selectable:true, is_active:true, is_visible:true, sort_order:2, prefix_letter:"C" },
+    // Taxes
+    { id: 30, parent_id: null, name:"Taxes", is_selectable:false, is_active:true, is_visible:true, sort_order:4, prefix_letter:"D" },
+    { id: 31, parent_id: 30,   name:"Property Tax", is_selectable:true, is_active:true, is_visible:true, sort_order:1, prefix_letter:"D" },
+    { id: 32, parent_id: 30,   name:"Business Tax", is_selectable:true, is_active:true, is_visible:true, sort_order:2, prefix_letter:"D" },
+    // Benefits
+    { id: 40, parent_id: null, name:"Benefits", is_selectable:false, is_active:true, is_visible:true, sort_order:5, prefix_letter:"E" },
+    { id: 41, parent_id: 40,   name:"Eligibility", is_selectable:true, is_active:true, is_visible:true, sort_order:1, prefix_letter:"E" },
+    { id: 42, parent_id: 40,   name:"Renewal",     is_selectable:true, is_active:true, is_visible:true, sort_order:2, prefix_letter:"E" },
+    // Applications
+    { id: 50, parent_id: null, name:"Applications", is_selectable:false, is_active:true, is_visible:true, sort_order:6, prefix_letter:"F" },
+    { id: 51, parent_id: 50,   name:"Permit App",   is_selectable:true, is_active:true, is_visible:true, sort_order:1, prefix_letter:"F" },
+    { id: 52, parent_id: 50,   name:"Grant App",    is_selectable:true, is_active:true, is_visible:true, sort_order:2, prefix_letter:"F" },
+    // Other
+    { id: 90, parent_id: null, name:"Other", is_selectable:true, is_active:true, is_visible:true, sort_order:99, prefix_letter:"Z" },
+  ],
+  tickets: [],
+  ticketLaneHistory: [],
+  ticketEvents: [],
+  selectionSessions: [],
+  selectionEvents: [],
+};
+
+function ensureFile() {
+  if (!fs.existsSync(DATA_PATH)) {
+    const lanes = ensureSeedLanesOnCreate(DEFAULTS);
+    save({ ...DEFAULTS, lanes, created_at: now() });
+  }
+}
+
+function normalize(db) {
+  let changed = false;
+
+  // backfill top-level keys
+  for (const k of Object.keys(DEFAULTS)) {
+    if (db[k] == null) {
+      db[k] = Array.isArray(DEFAULTS[k]) ? DEFAULTS[k].map((x) => ({ ...x })) : { ...DEFAULTS[k] };
+      changed = true;
+    }
+  }
+
+  // guarantee a valid ticket sequence
+  if (!db.sequences || typeof db.sequences.ticketSeq !== "number" || db.sequences.ticketSeq < 1) {
+    db.sequences = { ticketSeq: 1 };
+    changed = true;
+  }
+
+  // REPAIR ONLY if lanes are missing or empty, seed some once
+  if (!Array.isArray(db.lanes) || db.lanes.length === 0) {
+    db.lanes = ensureSeedLanesOnCreate(db);
+    changed = true;
+  }
+
+  return changed;
+}
 
 function load() {
-  if (!fs.existsSync(DATA_PATH)) {
-    const seed = {
-      sequences: { ticketSeq: 1 },
-      lanes: [
-        { id: 1, code: "L1", name: "Lane 1", is_open: true, is_deleted: false, created_at: now(), updated_at: now() },
-        { id: 2, code: "L2", name: "Lane 2", is_open: true, is_deleted: false, created_at: now(), updated_at: now() }
-      ],
-      kiosks: [{ id: 1, code: "K1", location: "Lobby", is_active: true, created_at: now() }],
-      users: [{ id: 1, username: "alice", role: "employee", display_name: "Alice", is_active: true }],
-      employeeLaneAssignments: [],
-      categories: [
-        { id: 1, parent_id: null, name: "Licensing", is_selectable: false, is_active: true, is_visible: true, sort_order: 1, prefix_letter: "A" },
-        { id: 2, parent_id: 1,    name: "Driver License", is_selectable: false, is_active: true, is_visible: true, sort_order: 1, prefix_letter: "A" },
-        { id: 3, parent_id: 2,    name: "Renewal", is_selectable: true, is_active: true, is_visible: true, sort_order: 1, prefix_letter: "A" },
-        { id: 4, parent_id: null, name: "Permits",   is_selectable: false, is_active: true, is_visible: true, sort_order: 2, prefix_letter: "B" },
-        { id: 5, parent_id: 4,    name: "Building",  is_selectable: true,  is_active: true, is_visible: true, sort_order: 1, prefix_letter: "B" },
-        { id: 6, parent_id: null, name: "Other",     is_selectable: true,  is_active: true, is_visible: true, sort_order: 99, prefix_letter: "Z" }
-      ],
-      tickets: [],
-      ticketLaneHistory: [],
-      ticketEvents: [],
-      selectionSessions: [],
-      selectionEvents: []
-    };
-    fs.writeFileSync(DATA_PATH, JSON.stringify(seed, null, 2));
+  ensureFile();
+  let db;
+  try {
+    db = JSON.parse(fs.readFileSync(DATA_PATH, "utf8") || "{}");
+  } catch {
+    // Corrupted file? Re-seed.
+    db = { ...DEFAULTS };
   }
-  return JSON.parse(fs.readFileSync(DATA_PATH, "utf8"));
+  if (normalize(db)) save(db);
+  return db;
 }
 
 function save(db) {
@@ -71,6 +142,72 @@ function nextTicketCode(db) {
     if (!conflict) return { prefix, num, code };
   }
   throw new Error("Unable to allocate a unique active ticket code after many attempts.");
+}
+
+function genLanes(n) {
+  const list = [];
+  for (let i = 1; i <= n; i++) {
+    list.push({
+      id: i,
+      code: `L${i}`,
+      name: `Lane ${i}`,
+      is_open: false,
+      is_deleted: false,
+      created_at: now(),
+      updated_at: now(),
+    });
+  }
+  return list;
+}
+
+function ensureSeedLanesOnCreate(defaultsObj) {
+  const employees = (defaultsObj.users || []).filter(
+    (u) => u.role === "employee" && u.is_active !== false
+  ).length;
+  const count = Math.max(1, employees + 2);
+  return genLanes(count);
+}
+
+// Reset allocator & data
+function resetTickets({ mode = "flush" } = {}) {
+  const db = load();
+  if (mode === "complete") {
+    const ts = now();
+    db.tickets.forEach(t => {
+      if (ACTIVE_STATUSES.has(t.status)) {
+        t.status = "completed";
+        if (!t.service_end_at) t.service_end_at = ts;
+        t.closed_at = ts;
+      }
+    });
+    db.ticketLaneHistory.forEach(h => { if (h.unassigned_at == null) h.unassigned_at = ts; });
+  } else {
+    db.tickets = [];
+    db.ticketEvents = [];
+    db.ticketLaneHistory = [];
+    db.selectionSessions = [];
+    db.selectionEvents = [];
+    db.employeeLaneAssignments = db.employeeLaneAssignments || [];
+  }
+  db.sequences = { ticketSeq: 1 }; // ← critical
+  save(db);
+  return { nextCode: "A00" };
+}
+
+function repair() {
+  const db = load();
+  const changed = normalize(db);
+  if (changed) save(db);
+  return { fixed: changed, summary: Object.keys(db) };
+}
+
+// quick seeder
+function seedTickets(n = 10) {
+  const out = [];
+  for (let i = 0; i < n; i++) {
+    out.push(module.exports.issueTicket({ kiosk_id: 1, category_id: 6 })); // adjust category_id as needed
+  }
+  return out.length;
 }
 
 // Public API
@@ -266,3 +403,4 @@ const dbApi = {
 };
 
 module.exports = dbApi;
+// module.exports = {dbApi, resetTickets, repair, seedTickets};

@@ -1,0 +1,610 @@
+{
+  "sequences": {
+    "ticketSeq": 3
+  },
+  "kiosks": [
+    {
+      "id": 1,
+      "code": "K1",
+      "location": "Lobby A",
+      "is_active": true,
+      "created_at": "2025-10-29T22:33:20.368Z"
+    },
+    {
+      "id": 2,
+      "code": "K2",
+      "location": "Lobby B",
+      "is_active": true,
+      "created_at": "2025-10-29T22:33:20.368Z"
+    },
+    {
+      "id": 3,
+      "code": "K3",
+      "location": "Annex",
+      "is_active": true,
+      "created_at": "2025-10-29T22:33:20.368Z"
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "username": "alice",
+      "role": "employee",
+      "display_name": "Alice",
+      "is_active": true
+    },
+    {
+      "id": 2,
+      "username": "bob",
+      "role": "employee",
+      "display_name": "Bob",
+      "is_active": true
+    },
+    {
+      "id": 3,
+      "username": "carol",
+      "role": "employee",
+      "display_name": "Carol",
+      "is_active": true
+    },
+    {
+      "id": 4,
+      "username": "dan",
+      "role": "employee",
+      "display_name": "Dan",
+      "is_active": true
+    },
+    {
+      "id": 5,
+      "username": "admin",
+      "role": "admin",
+      "display_name": "Admin",
+      "is_active": true
+    }
+  ],
+  "lanes": [
+    {
+      "id": 1,
+      "code": "L1",
+      "name": "Lane 1",
+      "is_open": true,
+      "is_deleted": false,
+      "created_at": "2025-10-29T22:33:21.559Z",
+      "updated_at": "2025-10-29T22:35:05.652Z"
+    },
+    {
+      "id": 2,
+      "code": "L2",
+      "name": "Lane 2",
+      "is_open": false,
+      "is_deleted": false,
+      "created_at": "2025-10-29T22:33:21.559Z",
+      "updated_at": "2025-10-29T22:57:23.345Z"
+    },
+    {
+      "id": 3,
+      "code": "L3",
+      "name": "Lane 3",
+      "is_open": false,
+      "is_deleted": false,
+      "created_at": "2025-10-29T22:33:21.559Z",
+      "updated_at": "2025-10-29T22:33:21.559Z"
+    },
+    {
+      "id": 4,
+      "code": "L4",
+      "name": "Lane 4",
+      "is_open": false,
+      "is_deleted": false,
+      "created_at": "2025-10-29T22:33:21.559Z",
+      "updated_at": "2025-10-29T22:33:21.559Z"
+    },
+    {
+      "id": 5,
+      "code": "L5",
+      "name": "Lane 5",
+      "is_open": false,
+      "is_deleted": false,
+      "created_at": "2025-10-29T22:33:21.559Z",
+      "updated_at": "2025-10-29T22:33:21.559Z"
+    },
+    {
+      "id": 6,
+      "code": "L6",
+      "name": "Lane 6",
+      "is_open": false,
+      "is_deleted": false,
+      "created_at": "2025-10-29T22:33:21.559Z",
+      "updated_at": "2025-10-29T22:33:21.559Z"
+    }
+  ],
+  "employeeLaneAssignments": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "lane_id": 1,
+      "assigned_at": "2025-10-29T22:34:48.338Z",
+      "released_at": "2025-10-29T22:34:51.267Z"
+    },
+    {
+      "id": 2,
+      "user_id": 1,
+      "lane_id": 1,
+      "assigned_at": "2025-10-29T22:34:51.267Z",
+      "released_at": "2025-10-29T22:34:53.660Z"
+    },
+    {
+      "id": 3,
+      "user_id": 1,
+      "lane_id": 1,
+      "assigned_at": "2025-10-29T22:34:53.660Z",
+      "released_at": "2025-10-29T22:36:38.033Z"
+    },
+    {
+      "id": 4,
+      "user_id": 1,
+      "lane_id": 1,
+      "assigned_at": "2025-10-29T22:36:38.033Z",
+      "released_at": "2025-10-29T22:53:00.507Z"
+    },
+    {
+      "id": 5,
+      "user_id": 1,
+      "lane_id": 2,
+      "assigned_at": "2025-10-29T22:53:00.507Z",
+      "released_at": "2025-10-29T22:57:27.153Z"
+    },
+    {
+      "id": 6,
+      "user_id": 1,
+      "lane_id": 1,
+      "assigned_at": "2025-10-29T22:57:27.153Z",
+      "released_at": "2025-10-29T22:57:30.288Z"
+    },
+    {
+      "id": 7,
+      "user_id": 1,
+      "lane_id": 1,
+      "assigned_at": "2025-10-29T22:57:30.288Z",
+      "released_at": null
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "parent_id": null,
+      "name": "Licensing",
+      "is_selectable": false,
+      "is_active": true,
+      "is_visible": true,
+      "sort_order": 1,
+      "prefix_letter": "A"
+    },
+    {
+      "id": 2,
+      "parent_id": 1,
+      "name": "Driver License",
+      "is_selectable": false,
+      "is_active": true,
+      "is_visible": true,
+      "sort_order": 1,
+      "prefix_letter": "A"
+    },
+    {
+      "id": 3,
+      "parent_id": 2,
+      "name": "New Application",
+      "is_selectable": true,
+      "is_active": true,
+      "is_visible": true,
+      "sort_order": 1,
+      "prefix_letter": "A"
+    },
+    {
+      "id": 4,
+      "parent_id": 2,
+      "name": "Renewal",
+      "is_selectable": true,
+      "is_active": true,
+      "is_visible": true,
+      "sort_order": 2,
+      "prefix_letter": "A"
+    },
+    {
+      "id": 5,
+      "parent_id": 1,
+      "name": "Professional",
+      "is_selectable": true,
+      "is_active": true,
+      "is_visible": true,
+      "sort_order": 2,
+      "prefix_letter": "A"
+    },
+    {
+      "id": 10,
+      "parent_id": null,
+      "name": "Permits",
+      "is_selectable": false,
+      "is_active": true,
+      "is_visible": true,
+      "sort_order": 2,
+      "prefix_letter": "B"
+    },
+    {
+      "id": 11,
+      "parent_id": 10,
+      "name": "Building",
+      "is_selectable": true,
+      "is_active": true,
+      "is_visible": true,
+      "sort_order": 1,
+      "prefix_letter": "B"
+    },
+    {
+      "id": 12,
+      "parent_id": 10,
+      "name": "Electrical",
+      "is_selectable": true,
+      "is_active": true,
+      "is_visible": true,
+      "sort_order": 2,
+      "prefix_letter": "B"
+    },
+    {
+      "id": 20,
+      "parent_id": null,
+      "name": "Records",
+      "is_selectable": false,
+      "is_active": true,
+      "is_visible": true,
+      "sort_order": 3,
+      "prefix_letter": "C"
+    },
+    {
+      "id": 21,
+      "parent_id": 20,
+      "name": "Birth Certificate",
+      "is_selectable": true,
+      "is_active": true,
+      "is_visible": true,
+      "sort_order": 1,
+      "prefix_letter": "C"
+    },
+    {
+      "id": 22,
+      "parent_id": 20,
+      "name": "Marriage License",
+      "is_selectable": true,
+      "is_active": true,
+      "is_visible": true,
+      "sort_order": 2,
+      "prefix_letter": "C"
+    },
+    {
+      "id": 30,
+      "parent_id": null,
+      "name": "Taxes",
+      "is_selectable": false,
+      "is_active": true,
+      "is_visible": true,
+      "sort_order": 4,
+      "prefix_letter": "D"
+    },
+    {
+      "id": 31,
+      "parent_id": 30,
+      "name": "Property Tax",
+      "is_selectable": true,
+      "is_active": true,
+      "is_visible": true,
+      "sort_order": 1,
+      "prefix_letter": "D"
+    },
+    {
+      "id": 32,
+      "parent_id": 30,
+      "name": "Business Tax",
+      "is_selectable": true,
+      "is_active": true,
+      "is_visible": true,
+      "sort_order": 2,
+      "prefix_letter": "D"
+    },
+    {
+      "id": 40,
+      "parent_id": null,
+      "name": "Benefits",
+      "is_selectable": false,
+      "is_active": true,
+      "is_visible": true,
+      "sort_order": 5,
+      "prefix_letter": "E"
+    },
+    {
+      "id": 41,
+      "parent_id": 40,
+      "name": "Eligibility",
+      "is_selectable": true,
+      "is_active": true,
+      "is_visible": true,
+      "sort_order": 1,
+      "prefix_letter": "E"
+    },
+    {
+      "id": 42,
+      "parent_id": 40,
+      "name": "Renewal",
+      "is_selectable": true,
+      "is_active": true,
+      "is_visible": true,
+      "sort_order": 2,
+      "prefix_letter": "E"
+    },
+    {
+      "id": 50,
+      "parent_id": null,
+      "name": "Applications",
+      "is_selectable": false,
+      "is_active": true,
+      "is_visible": true,
+      "sort_order": 6,
+      "prefix_letter": "F"
+    },
+    {
+      "id": 51,
+      "parent_id": 50,
+      "name": "Permit App",
+      "is_selectable": true,
+      "is_active": true,
+      "is_visible": true,
+      "sort_order": 1,
+      "prefix_letter": "F"
+    },
+    {
+      "id": 52,
+      "parent_id": 50,
+      "name": "Grant App",
+      "is_selectable": true,
+      "is_active": true,
+      "is_visible": true,
+      "sort_order": 2,
+      "prefix_letter": "F"
+    },
+    {
+      "id": 90,
+      "parent_id": null,
+      "name": "Other",
+      "is_selectable": true,
+      "is_active": true,
+      "is_visible": true,
+      "sort_order": 99,
+      "prefix_letter": "Z"
+    }
+  ],
+  "tickets": [
+    {
+      "id": 1,
+      "prefix": "A",
+      "seq_num": 0,
+      "code": "A00",
+      "issued_at": "2025-10-29T22:35:15.885Z",
+      "status": "completed",
+      "lane_id": 1,
+      "kiosk_id": 1,
+      "category_id": 3,
+      "service_start_at": "2025-10-29T22:45:58.793Z",
+      "service_end_at": "2025-10-29T22:50:51.422Z",
+      "closed_at": "2025-10-29T22:50:51.422Z"
+    },
+    {
+      "id": 2,
+      "prefix": "A",
+      "seq_num": 1,
+      "code": "A01",
+      "issued_at": "2025-10-29T22:35:23.456Z",
+      "status": "completed",
+      "lane_id": 2,
+      "kiosk_id": 1,
+      "category_id": 12,
+      "service_start_at": "2025-10-29T22:57:12.069Z",
+      "service_end_at": "2025-10-29T22:57:17.478Z",
+      "closed_at": "2025-10-29T22:57:17.478Z"
+    }
+  ],
+  "ticketLaneHistory": [
+    {
+      "id": 1,
+      "ticket_id": 1,
+      "lane_id": 1,
+      "assigned_at": "2025-10-29T22:35:41.433Z",
+      "unassigned_at": "2025-10-29T22:50:51.422Z"
+    },
+    {
+      "id": 2,
+      "ticket_id": 2,
+      "lane_id": 2,
+      "assigned_at": "2025-10-29T22:37:36.262Z",
+      "unassigned_at": "2025-10-29T22:50:31.766Z"
+    },
+    {
+      "id": 3,
+      "ticket_id": 2,
+      "lane_id": 1,
+      "assigned_at": "2025-10-29T22:50:31.766Z",
+      "unassigned_at": "2025-10-29T22:50:42.998Z"
+    },
+    {
+      "id": 4,
+      "ticket_id": 2,
+      "lane_id": 2,
+      "assigned_at": "2025-10-29T22:50:42.998Z",
+      "unassigned_at": "2025-10-29T22:57:17.478Z"
+    }
+  ],
+  "ticketEvents": [
+    {
+      "id": 1,
+      "ticket_id": 1,
+      "event_type": "issued",
+      "category_id": 3,
+      "lane_id": null,
+      "meta": null,
+      "occurred_at": "2025-10-29T22:35:15.885Z"
+    },
+    {
+      "id": 2,
+      "ticket_id": 2,
+      "event_type": "issued",
+      "category_id": 12,
+      "lane_id": null,
+      "meta": null,
+      "occurred_at": "2025-10-29T22:35:23.456Z"
+    },
+    {
+      "id": 3,
+      "ticket_id": 1,
+      "event_type": "called",
+      "lane_id": 1,
+      "category_id": 3,
+      "meta": null,
+      "occurred_at": "2025-10-29T22:35:41.433Z"
+    },
+    {
+      "id": 4,
+      "ticket_id": 2,
+      "event_type": "called",
+      "lane_id": 2,
+      "category_id": 12,
+      "meta": null,
+      "occurred_at": "2025-10-29T22:37:36.262Z"
+    },
+    {
+      "id": 5,
+      "ticket_id": 1,
+      "event_type": "service_start",
+      "lane_id": 1,
+      "category_id": 3,
+      "meta": null,
+      "occurred_at": "2025-10-29T22:45:58.793Z"
+    },
+    {
+      "id": 6,
+      "ticket_id": 2,
+      "event_type": "reassigned_lane",
+      "lane_id": 1,
+      "category_id": 12,
+      "meta": {
+        "from_lane": 2,
+        "to_lane": 1
+      },
+      "occurred_at": "2025-10-29T22:50:31.766Z"
+    },
+    {
+      "id": 7,
+      "ticket_id": 2,
+      "event_type": "reassigned_lane",
+      "lane_id": 2,
+      "category_id": 12,
+      "meta": {
+        "from_lane": 1,
+        "to_lane": 2
+      },
+      "occurred_at": "2025-10-29T22:50:42.998Z"
+    },
+    {
+      "id": 8,
+      "ticket_id": 1,
+      "event_type": "completed",
+      "lane_id": 1,
+      "category_id": 3,
+      "meta": null,
+      "occurred_at": "2025-10-29T22:50:51.422Z"
+    },
+    {
+      "id": 9,
+      "ticket_id": 2,
+      "event_type": "service_start",
+      "lane_id": 2,
+      "category_id": 12,
+      "meta": null,
+      "occurred_at": "2025-10-29T22:57:12.069Z"
+    },
+    {
+      "id": 10,
+      "ticket_id": 2,
+      "event_type": "completed",
+      "lane_id": 2,
+      "category_id": 12,
+      "meta": null,
+      "occurred_at": "2025-10-29T22:57:17.478Z"
+    }
+  ],
+  "selectionSessions": [
+    {
+      "id": 1,
+      "kiosk_id": 1,
+      "started_at": "2025-10-29T22:33:57.606Z",
+      "completed_at": null,
+      "ticket_id": null
+    },
+    {
+      "id": 2,
+      "kiosk_id": 1,
+      "started_at": "2025-10-29T22:35:20.938Z",
+      "completed_at": "2025-10-29T22:35:23.604Z",
+      "ticket_id": 2
+    },
+    {
+      "id": 3,
+      "kiosk_id": 1,
+      "started_at": "2025-10-29T22:35:28.547Z",
+      "completed_at": null,
+      "ticket_id": null
+    }
+  ],
+  "selectionEvents": [
+    {
+      "id": 1,
+      "session_id": 23,
+      "category_id": 1,
+      "level": 1,
+      "selected_at": "2025-10-29T22:35:13.650Z"
+    },
+    {
+      "id": 2,
+      "session_id": 23,
+      "category_id": 1,
+      "level": 1,
+      "selected_at": "2025-10-29T22:35:13.896Z"
+    },
+    {
+      "id": 3,
+      "session_id": 23,
+      "category_id": 2,
+      "level": 2,
+      "selected_at": "2025-10-29T22:35:15.343Z"
+    },
+    {
+      "id": 4,
+      "session_id": 23,
+      "category_id": 3,
+      "level": 3,
+      "selected_at": "2025-10-29T22:35:15.820Z"
+    },
+    {
+      "id": 5,
+      "session_id": 2,
+      "category_id": 10,
+      "level": 1,
+      "selected_at": "2025-10-29T22:35:22.064Z"
+    },
+    {
+      "id": 6,
+      "session_id": 2,
+      "category_id": 12,
+      "level": 2,
+      "selected_at": "2025-10-29T22:35:23.348Z"
+    }
+  ],
+  "created_at": "2025-10-29T22:33:21.560Z"
+}

@@ -1,6 +1,15 @@
 const router = require("express").Router();
 const db = require("../mock/mockDB");
 
+router.get("/", (_req, res) => {
+  try {
+    const { lanes = [] } = db.getDb();
+    res.json(lanes);
+  } catch (e) {
+    res.status(500).json({ error: String(e.message || e) });
+  }
+});
+
 router.post("/open-close", (req, res) => {
   try {
     const { laneId, isOpen } = req.body || {};
