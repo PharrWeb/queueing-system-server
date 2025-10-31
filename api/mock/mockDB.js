@@ -375,9 +375,14 @@ const dbApi = {
                (new Date(b.issued_at) - new Date(a.issued_at));
       })
       .map(t => ({
-        ticket_id: t.id, code: t.code, status: t.status, lane_id: t.lane_id,
+        ticket_id: t.id, 
+        code: t.code, 
+        status: t.status, 
+        lane_id: t.lane_id,
         lane_code: (load().lanes.find(l => l.id === t.lane_id)?.code) || null,
-        issued_at: t.issued_at, service_start_at: t.service_start_at
+        issued_at: t.issued_at, 
+        service_start_at: t.service_start_at,
+        category_id: t.category_id,
       }));
   },
 

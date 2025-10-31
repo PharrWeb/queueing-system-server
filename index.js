@@ -3,7 +3,7 @@ const cors = require("cors");
 const app = express();
 require("dotenv").config();
 // middleware
-app.use(require("cors")({ origin: "http://localhost:3000", credentials: false }));
+app.use(require("cors")({ origin: [process.env.PROD_CLIENT_URL, process.env.DEV_CLIENT_URL], default: process.env.PROD_CLIENT_URL, credentials: false }));
 app.use(express.json({ limit: "256kb" }));
 // Routes Path
 const api = require("./api/api");
